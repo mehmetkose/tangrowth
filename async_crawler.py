@@ -10,8 +10,6 @@
 
 import aiohttp
 import asyncio
-
-from html.parser import HTMLParser
 from urllib.parse import urljoin, urldefrag
 
 root_url = "http://python.org"
