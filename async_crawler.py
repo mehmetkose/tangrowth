@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # python dictionary object to html5 json form generator.
 # https://github.com/mehmetkose/python3-async-crawler
