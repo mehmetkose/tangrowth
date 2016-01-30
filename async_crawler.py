@@ -22,13 +22,6 @@ async def get_body(client, url):
     async with client.get(url) as response:
         return await response.read()
 
-def list_uniqifier(seq):
-    keys = {}
-    for e in seq:
-        if len(e) > 1:
-            keys[e] = 1
-    return keys.keys()
-
 def remove_fragment(url):
     pure_url, frag = urldefrag(url)
     return pure_url
