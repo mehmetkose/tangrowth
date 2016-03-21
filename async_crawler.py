@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# python dictionary object to html5 json form generator.
-# https://github.com/mehmetkose/python3-async-crawler
+# python 3.5 async web crawler.
+# https://github.com/mehmetkose/python3.5-async-crawler
 
 # Licensed under the MIT license:
 # http://www.opensource.org/licenses/mit-license
