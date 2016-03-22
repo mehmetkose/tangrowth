@@ -16,9 +16,9 @@ root_url = "http://python.org"
 crawled_urls = []
 url_hub = [root_url, "%s/robots.txt" % (root_url), "%s/sitemap.xml" % (root_url)]
 
-async def get_body(client, url):
-    async with client.get(url) as response:
-        return await response.read()
+async def get_body(url):
+    response = await aiohttp.request('GET', url)
+    return await response.read()
 
 def remove_fragment(url):
     pure_url, frag = urldefrag(url)
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     client = aiohttp.ClientSession(loop=loop)
     for to_crawl in url_hub:
-        raw_html = loop.run_until_complete(get_body(client, to_crawl))
+        raw_html = loop.run_until_complete(get_body(to_crawl))
         for link in get_links(raw_html):
             if root_url in link and not link in crawled_urls:
                 url_hub.append(link)
