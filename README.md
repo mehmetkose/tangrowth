@@ -1,4 +1,4 @@
-# python3.5-async-crawler
+# python3.5-async-crawler [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mehmetkose/python3.5-async-crawler/edit/master/README.md)
 Python3.5 Async Crawler Example with aiohttp and asyncio
 
 
