@@ -1,6 +1,7 @@
-# python3.5-async-crawler [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mehmetkose/python3.5-async-crawler/edit/master/README.md)
+# Tangrowth [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mehmetkose/python3.5-async-crawler/edit/master/README.md)
 Python3.5 Async Crawler Example with aiohttp and asyncio
 
+![Image of Tangrowth](https://assets.pokemon.com/assets/cms2/img/pokedex/detail/465.png)
 
 ## Installation
 
