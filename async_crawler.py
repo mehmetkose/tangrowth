@@ -12,7 +12,8 @@ import aiohttp
 import asyncio
 from urllib.parse import urljoin, urldefrag
 
-root_url = "http://python.org"
+
+root_url = "http://python.org/"
 crawled_urls, url_hub = [], [root_url, "%s/sitemap.xml" % (root_url), "%s/robots.txt" % (root_url)]
 
 async def get_body(url):
@@ -22,13 +23,12 @@ async def get_body(url):
 async def handle_task(task_id, work_queue):
     while not work_queue.empty():
         queue_url = await work_queue.get()
-        crawled_urls.append(queue_url)
-        body = await get_body(queue_url)
-        for new_url in get_urls(body):
-            if root_url in new_url and not new_url in crawled_urls:
-                q.put_nowait(new_url)
-        print(queue_url)
-        #await asyncio.sleep(5)
+        if not queue_url in crawled_urls:
+            crawled_urls.append(queue_url)
+            body = await get_body(queue_url)
+            for new_url in get_urls(body):
+                if root_url in new_url and not new_url in crawled_urls:
+                    work_queue.put_nowait(new_url)
 
 def remove_fragment(url):
     pure_url, frag = urldefrag(url)
@@ -45,3 +45,7 @@ if __name__ == "__main__":
     tasks = [handle_task(task_id, q) for task_id in range(3)]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+    for u in crawled_urls:
+        print(u)
+    print('-'*30)
+    print(len(crawled_urls))
