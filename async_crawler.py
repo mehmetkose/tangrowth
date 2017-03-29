@@ -10,25 +10,40 @@
 
 import aiohttp
 import asyncio
+import async_timeout
 from urllib.parse import urljoin, urldefrag
 
-root_url = "http://python.org"
+
+root_url = "http://python.org/"
 crawled_urls, url_hub = [], [root_url, "%s/sitemap.xml" % (root_url), "%s/robots.txt" % (root_url)]
+headers = {'user-agent': 'Opera/9.80 (X11; Linux x86_64; U; en) Presto/2.2.15 Version/10.10'}
+
 
 async def get_body(url):
-    response = await aiohttp.request('GET', url)
-    return await response.read()
+    async with aiohttp.ClientSession() as session:
+        try:
+            with async_timeout.timeout(10):
+                async with session.get(url, headers=headers) as response:
+                    if response.status == 200:
+                        html = await response.text()
+                        return {'error': '', 'html': html}
+                    else:
+                        return {'error': response.status, 'html': ''}
+        except Exception as err:
+            return {'error': err, 'html': ''}
 
 async def handle_task(task_id, work_queue):
     while not work_queue.empty():
         queue_url = await work_queue.get()
-        crawled_urls.append(queue_url)
-        body = await get_body(queue_url)
-        for new_url in get_urls(body):
-            if root_url in new_url and not new_url in crawled_urls:
-                q.put_nowait(new_url)
-        print(queue_url)
-        #await asyncio.sleep(5)
+        if not queue_url in crawled_urls:
+            crawled_urls.append(queue_url)
+            body = await get_body(queue_url)
+            if not body['error']:
+                for new_url in get_urls(body['html']):
+                    if root_url in new_url and not new_url in crawled_urls:
+                        work_queue.put_nowait(new_url)
+            else:
+                print(f"Error: {body['error']} - {queue_url}")
 
 def remove_fragment(url):
     pure_url, frag = urldefrag(url)
@@ -45,3 +60,7 @@ if __name__ == "__main__":
     tasks = [handle_task(task_id, q) for task_id in range(3)]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+    for u in crawled_urls:
+        print(u)
+    print('-'*30)
+    print(len(crawled_urls))
