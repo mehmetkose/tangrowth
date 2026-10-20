@@ -101,7 +101,7 @@ jobs:
   links:
     runs-on: ubuntu-latest
     steps:
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - run: uvx --from git+https://github.com/mehmetkose/tangrowth tangrowth https://your-site.example -n 1000
 ```
 
