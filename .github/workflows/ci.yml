@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+        resolution: [highest]
+        include:
+          # Also test the oldest dependency versions pyproject.toml allows.
+          - python-version: "3.11"
+            resolution: lowest-direct
+    name: test (Python ${{ matrix.python-version }}, ${{ matrix.resolution }})
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: uv run --isolated --resolution ${{ matrix.resolution }} pytest -v
+      - run: uv build
