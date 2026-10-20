@@ -44,7 +44,7 @@ dev = ["pytest>=8.4", "pytest-asyncio>=1.0", "pytest-aiohttp>=1.1", "ruff>=0.15"
 path = "src/tangrowth/_version.py"
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "tests", "examples", "README.md", "LICENSE"]
+include = ["src", "tests", "examples", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
